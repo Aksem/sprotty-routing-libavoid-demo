@@ -5,6 +5,10 @@ import { viteCommonjs, esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/sprotty-routing-libavoid-demo/',
+  build: {
+    outDir: 'docs',
+  },
   plugins: [
     vue(),
     babel({
