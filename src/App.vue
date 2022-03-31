@@ -12,3 +12,10 @@ export default defineComponent({
 <template>
   <DiagramView />
 </template>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+}
+</style>
