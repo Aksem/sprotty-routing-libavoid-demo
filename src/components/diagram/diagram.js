@@ -13,7 +13,7 @@ export const createDiagram = async () => {
   function addNode(bounds) {
     const newNode = {
       id: 'node' + count,
-      type: 'node:circle',
+      type: 'node:square',
       position: {
         x: bounds.x + Math.random() * (bounds.width - NODE_SIZE),
         y: bounds.y + Math.random() * (bounds.height - NODE_SIZE),
@@ -34,11 +34,6 @@ export const createDiagram = async () => {
     return [newNode, newEdge];
   }
 
-//   function focusGraph() {
-//     const graphElement = document.getElementById('graph');
-//     if (graphElement !== null && typeof graphElement.focus === 'function') graphElement.focus();
-//   }
-
   function getVisibleBounds({ canvasBounds, scroll, zoom }) {
     return {
       ...scroll,
@@ -48,13 +43,12 @@ export const createDiagram = async () => {
   }
 
   const container = createDiagramContainer();
-//   const dispatcher = container.get(TYPES.IActionDispatcher);
   const modelSource = container.get(TYPES.ModelSource);
 
   // Initialize model
   const node0 = {
     id: 'node0',
-    type: 'node:circle',
+    type: 'node:square',
     position: { x: 100, y: 100 },
     size: { width: NODE_SIZE, height: NODE_SIZE },
   };

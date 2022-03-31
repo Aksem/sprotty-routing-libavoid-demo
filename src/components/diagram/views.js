@@ -1,18 +1,15 @@
-// import { svg } from 'sprotty/lib/lib/jsx';
 import { injectable } from 'inversify';
 import { h } from 'snabbdom';
 import { ShapeView } from 'sprotty';
 
-/**
- * A very simple example node consisting of a plain circle.
- */
+
 @injectable()
-export class CircleNodeView extends ShapeView {
+export class MainNodeView extends ShapeView {
   render(node, context) {
     if (!this.isVisible(node, context)) {
       return undefined;
     }
-    const radius = this.getRadius(node);
+    const size = this.getSize(node);
     return h('g', {}, [
       h('rect', {
         attrs: {
@@ -29,8 +26,8 @@ export class CircleNodeView extends ShapeView {
         'text',
         {
           attrs: {
-            x: radius,
-            y: radius + 7,
+            x: size,
+            y: size + 7,
             'class-sprotty-text': true,
           },
         },
@@ -39,7 +36,7 @@ export class CircleNodeView extends ShapeView {
     ]);
   }
 
-  getRadius(node) {
+  getSize(node) {
     const d = Math.min(node.size.width, node.size.height);
     return d > 0 ? d / 2 : 0;
   }

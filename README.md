@@ -1,7 +1,7 @@
-# Vue 3 + Vite
+# Sprotty with sprotty-routing-libavoid Demo
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+[Demo](https://github.com/Aksem/sprotty-routing-libavoid-demo)
 
-## Recommended IDE Setup
+This is an example project of using [sprotty framework](https://github.com/eclipse/sprotty) with [sprotty-routing-libavoid](https://github.com/Aksem/sprotty-routing-libavoid) extension.
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+It's also a basic example of integration of sprotty-based diagram editor in a Vue.js application.

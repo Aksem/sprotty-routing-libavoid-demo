@@ -1,13 +1,13 @@
 import { Container, ContainerModule } from "inversify";
 import {
     TYPES, configureViewerOptions, SGraphView, ConsoleLogger, LogLevel, loadDefaultModules,
-    LocalModelSource, CircularNode, configureModelElement, SGraph, PolylineEdgeView
+    LocalModelSource, RectangularNode, configureModelElement, SGraph, PolylineEdgeView
 } from 'sprotty';
 import { LibavoidRouter, RouteType, LibavoidEdge } from 'sprotty-routing-libavoid';
 
-import { CircleNodeView } from "./views.js";
+import { MainNodeView } from "./views.js";
 
-const circlegraphModule = new ContainerModule((bind, unbind, isBound, rebind) => {
+const exampleGraphModule = new ContainerModule((bind, unbind, isBound, rebind) => {
     bind(TYPES.ModelSource).to(LocalModelSource).inSingletonScope();
     rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
     rebind(TYPES.LogLevel).toConstantValue(LogLevel.log);
@@ -17,10 +17,8 @@ const circlegraphModule = new ContainerModule((bind, unbind, isBound, rebind) =>
 
     const context = { bind, unbind, isBound, rebind };
     configureModelElement(context, 'graph', SGraph, SGraphView);
-    configureModelElement(context, 'node:circle', CircularNode, CircleNodeView);
-    configureModelElement(context, 'edge:straight', LibavoidEdge, PolylineEdgeView, {
-        // disable: [selectFeature]
-    });
+    configureModelElement(context, 'node:square', RectangularNode, MainNodeView);
+    configureModelElement(context, 'edge:straight', LibavoidEdge, PolylineEdgeView, {});
     configureViewerOptions(context, {
         needsClientLayout: false
     });
@@ -29,7 +27,7 @@ const circlegraphModule = new ContainerModule((bind, unbind, isBound, rebind) =>
 export const createDiagramContainer = () => {
     const container = new Container();
     loadDefaultModules(container);
-    container.load(circlegraphModule);
+    container.load(exampleGraphModule);
 
     const router = container.get(LibavoidRouter);
     router.setOptions({
@@ -45,5 +43,5 @@ export const createDiagramContainer = () => {
 
 export const destroyDiagramContainer = (container) => {
     container.unbindAll();
-    container.unload(circlegraphModule);
+    container.unload(exampleGraphModule);
 }
