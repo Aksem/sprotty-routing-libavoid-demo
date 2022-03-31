@@ -35,6 +35,10 @@ export default defineComponent({
 </script>
 
 <style>
+.sprotty-diagram {
+  height: 100%;
+}
+
 .sprotty {
   height: 100%;
 }
