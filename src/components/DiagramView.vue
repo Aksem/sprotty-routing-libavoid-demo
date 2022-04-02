@@ -1,5 +1,8 @@
 <template>
   <div class="sprotty-diagram">
+    <input v-model="nodes" type="number"> Nodes
+    <input v-model="randomNodes" type="checkbox"> Random
+    <button @click="updateDiagram">Update</button>
     <div id="sprotty" class="sprotty" />
   </div>
 </template>
@@ -16,21 +19,62 @@ export default defineComponent({
   data() {
     return {
       container: null,
+      nodes:25,
+      randomNodes: false,
+    }
+  },
+
+  watch: {
+    nodes(newValue) {
+      try {
+        localStorage.setItem('nodes', JSON.stringify(newValue));
+      } catch (e) {
+        console.log(e);
+        console.log('LS is unavailable');
+      }
+      this.updateDiagram();
+    },
+
+    randomNodes(newValue) {
+      try {
+        localStorage.setItem('randomNodes', JSON.stringify(newValue));
+      } catch (e) {
+        console.log(e);
+        console.log('LS is unavailable');
+      }
+      this.updateDiagram();
     }
   },
 
   mounted() {
-    const func = async () => {
-      this.container = await createDiagram();
+    try {
+      const randomNodesRawValue = localStorage.getItem('randomNodes');
+      this.randomNodes = randomNodesRawValue !== null ? JSON.parse(randomNodesRawValue) : false;
+      const nodesRawValue = localStorage.getItem('nodes');
+      this.nodes = nodesRawValue !== null ? JSON.parse(nodesRawValue) : 25;
+    } catch (e) {
+      console.log(e);
+      console.log('LS is unavailable');
     }
-    func();
+
+    this.updateDiagram();
   },
 
   beforeUnmount() {
     if (this.container) {
       destroyDiagram(this.container);
     }
-  }
+  },
+
+  methods: {
+    async updateDiagram() {
+      if (this.container) {
+        destroyDiagram(this.container);
+      }
+
+      this.container = await createDiagram(this.nodes, this.randomNodes);
+    },
+  },
 });
 </script>
 
@@ -40,7 +84,7 @@ export default defineComponent({
 }
 
 .sprotty {
-  height: 100%;
+  height: calc(100% - 34px);
 }
 
 .sprotty-diagram svg {

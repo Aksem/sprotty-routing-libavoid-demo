@@ -6,17 +6,18 @@ import { createDiagramContainer, destroyDiagramContainer } from './di-config.js'
 
 const NODE_SIZE = 60;
 
-export const createDiagram = async () => {
+export const createDiagram = async (nodesNumber, random) => {
   await loadRouting();
 
   let count = 2;
-  function addNode(bounds) {
+  function addNode(bounds, index) {
+    const factor = random ? Math.random() : 0.15 + (0.09 * index);
     const newNode = {
       id: 'node' + count,
       type: 'node:square',
       position: {
-        x: bounds.x + Math.random() * (bounds.width - NODE_SIZE),
-        y: bounds.y + Math.random() * (bounds.height - NODE_SIZE),
+        x: bounds.x + factor * (bounds.width - NODE_SIZE),
+        y: bounds.y + factor * (bounds.height - NODE_SIZE),
       },
       size: {
         width: NODE_SIZE,
@@ -55,8 +56,8 @@ export const createDiagram = async () => {
   const graph = { id: 'graph', type: 'graph', children: [node0] };
 
   const initialViewport = await modelSource.getViewport();
-  for (let i = 0; i < 32; ++i) {
-    const newElements = addNode(getVisibleBounds(initialViewport));
+  for (let i = 0; i < nodesNumber; ++i) {
+    const newElements = addNode(getVisibleBounds(initialViewport), i);
     graph.children.push(...newElements);
   }
 
