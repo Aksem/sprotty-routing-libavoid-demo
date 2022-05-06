@@ -5,7 +5,7 @@ import { viteCommonjs, esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/sprotty-routing-libavoid-demo/',
+  base: process.env.NODE_ENV === 'production' ? '/sprotty-routing-libavoid-demo/' : '',
   build: {
     outDir: 'docs',
   },
