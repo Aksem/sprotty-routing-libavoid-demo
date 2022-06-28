@@ -3,7 +3,7 @@ import {
     TYPES, configureViewerOptions, SGraphView, ConsoleLogger, LogLevel, loadDefaultModules,
     LocalModelSource, RectangularNode, configureModelElement, SGraph, PolylineEdgeView
 } from 'sprotty';
-import { LibavoidRouter, RouteType, LibavoidEdge } from 'sprotty-routing-libavoid';
+import { LibavoidRouter, RouteType, LibavoidEdge, LibavoidEllipseAnchor, LibavoidDiamondAnchor, LibavoidRectangleAnchor } from 'sprotty-routing-libavoid';
 
 import { MainNodeView } from "./views.js";
 
@@ -14,6 +14,9 @@ const exampleGraphModule = new ContainerModule((bind, unbind, isBound, rebind) =
 
     bind(LibavoidRouter).toSelf().inSingletonScope();
     bind(TYPES.IEdgeRouter).toService(LibavoidRouter);
+    bind(TYPES.IAnchorComputer).to(LibavoidDiamondAnchor).inSingletonScope();
+    bind(TYPES.IAnchorComputer).to(LibavoidEllipseAnchor).inSingletonScope();
+    bind(TYPES.IAnchorComputer).to(LibavoidRectangleAnchor).inSingletonScope();
 
     const context = { bind, unbind, isBound, rebind };
     configureModelElement(context, 'graph', SGraph, SGraphView);

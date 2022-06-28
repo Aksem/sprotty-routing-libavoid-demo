@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { TYPES } from 'sprotty';
-import { load as loadRouting } from 'sprotty-routing-libavoid';
+import { load as loadRouting, LibavoidRouter } from 'sprotty-routing-libavoid';
 
 import { createDiagramContainer, destroyDiagramContainer } from './di-config.js';
 
@@ -29,7 +29,7 @@ export const createDiagram = async (nodesNumber, random) => {
       type: 'edge:straight',
       sourceId: 'node0',
       targetId: 'node' + count,
-      routerKind: "libavoid",
+      routerKind: LibavoidRouter.KIND,
     };
     count++;
     return [newNode, newEdge];
