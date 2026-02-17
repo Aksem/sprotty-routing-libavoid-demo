@@ -5,9 +5,11 @@ import { viteCommonjs, esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/sprotty-routing-libavoid-demo/' : '',
+  // base: process.env.NODE_ENV === 'production' ? '/sprotty-routing-libavoid-demo/' : '',
   build: {
     outDir: 'docs',
+    commonjsOptions: { include: [/sprotty/, /node_modules/] },
+    minify: false
   },
   plugins: [
     vue(),
@@ -23,6 +25,7 @@ export default defineConfig({
   ],
 
   optimizeDeps: {
+    include: ['sprotty'],
     esbuildOptions: {
       plugins: [
         esbuildCommonjs(['@vscode/codicons'])

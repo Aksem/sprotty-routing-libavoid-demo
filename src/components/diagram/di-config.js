@@ -1,13 +1,31 @@
 import { Container, ContainerModule } from "inversify";
 import {
-    TYPES, configureViewerOptions, SGraphView, ConsoleLogger, LogLevel, loadDefaultModules,
-    LocalModelSource, RectangularNode, configureModelElement, SGraph, PolylineEdgeView
-} from 'sprotty';
-import { LibavoidRouter, RouteType, LibavoidEdge, LibavoidEllipseAnchor, LibavoidDiamondAnchor, LibavoidRectangleAnchor } from 'sprotty-routing-libavoid';
+  TYPES,
+  configureViewerOptions,
+  SGraphView,
+  ConsoleLogger,
+  LogLevel,
+  loadDefaultModules,
+  LocalModelSource,
+  RectangularNode,
+  configureModelElement,
+  SGraphImpl,
+  PolylineEdgeView,
+  EdgeRouterRegistry,
+} from "sprotty";
+import {
+  LibavoidRouter,
+  RouteType,
+  LibavoidEdge,
+  LibavoidEllipseAnchor,
+  LibavoidDiamondAnchor,
+  LibavoidRectangleAnchor,
+} from "sprotty-routing-libavoid";
 
 import { MainNodeView } from "./views.js";
 
-const exampleGraphModule = new ContainerModule((bind, unbind, isBound, rebind) => {
+const exampleGraphModule = new ContainerModule(
+  (bind, unbind, isBound, rebind) => {
     bind(TYPES.ModelSource).to(LocalModelSource).inSingletonScope();
     rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
     rebind(TYPES.LogLevel).toConstantValue(LogLevel.log);
@@ -19,32 +37,44 @@ const exampleGraphModule = new ContainerModule((bind, unbind, isBound, rebind) =
     bind(TYPES.IAnchorComputer).to(LibavoidRectangleAnchor).inSingletonScope();
 
     const context = { bind, unbind, isBound, rebind };
-    configureModelElement(context, 'graph', SGraph, SGraphView);
-    configureModelElement(context, 'node:square', RectangularNode, MainNodeView);
-    configureModelElement(context, 'edge:straight', LibavoidEdge, PolylineEdgeView, {});
+    configureModelElement(context, "graph", SGraphImpl, SGraphView);
+    configureModelElement(
+      context,
+      "node:square",
+      RectangularNode,
+      MainNodeView
+    );
+    configureModelElement(
+      context,
+      "edge:straight",
+      LibavoidEdge,
+      PolylineEdgeView,
+      {}
+    );
     configureViewerOptions(context, {
-        needsClientLayout: false
+      needsClientLayout: false,
     });
-});
+  }
+);
 
 export const createDiagramContainer = () => {
-    const container = new Container();
-    loadDefaultModules(container);
-    container.load(exampleGraphModule);
+  const container = new Container();
+  loadDefaultModules(container);
+  container.load(exampleGraphModule);
 
-    const router = container.get(LibavoidRouter);
-    router.setOptions({
-        routingType: RouteType.Orthogonal,
-        segmentPenalty: 50,
-        idealNudgingDistance: 4,
-        nudgeOrthogonalSegmentsConnectedToShapes: true,
-        nudgeOrthogonalTouchingColinearSegments: true
-    });
+  const router = container.get(LibavoidRouter);
+  router.setOptions({
+    routingType: RouteType.Orthogonal,
+    segmentPenalty: 50,
+    idealNudgingDistance: 4,
+    nudgeOrthogonalSegmentsConnectedToShapes: true,
+    nudgeOrthogonalTouchingColinearSegments: true,
+  });
 
-    return container;
+  return container;
 };
 
 export const destroyDiagramContainer = (container) => {
-    container.unbindAll();
-    container.unload(exampleGraphModule);
-}
+  container.unbindAll();
+  container.unload(exampleGraphModule);
+};

@@ -68,7 +68,9 @@ export default defineComponent({
 
   methods: {
     async updateDiagram() {
+      console.log('update');
       if (this.container) {
+        console.log('destroy')
         destroyDiagram(this.container);
       }
 
